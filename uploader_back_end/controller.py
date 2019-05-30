@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect, jsonify
 from config.default import *
 from utils import validate
 from utils.search import search
@@ -21,12 +21,23 @@ def upload_file():
             file_name = secure_filename(file.filename)
             path=os.path.join(app.config['UPLOAD_FOLDER'], file_name)
             file.save(path)
-            flash(f'{file_name} has been uploaded!!!', 'success')
-            return redirect(url_for('index_upload'))
+            return jsonify({"msg":"File Uploaded!!!"}), 200
         else:
-            flash('Failed!!! Check your file type', 'error')
-            return redirect(url_for('index_upload'))
-    return redirect(url_for('index_upload'))
+            return jsonify({"msg":"Upload Failed!!! check file type (only csv file types are supported)"}), 500
+    return 
+# def upload_file():
+#     if request.method=='POST':
+#         file = request.files['file']
+#         if file and validate.check_file(file.filename):
+#             file_name = secure_filename(file.filename)
+#             path=os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+#             file.save(path)
+#             flash(f'{file_name} has been uploaded!!!', 'success')
+#             return redirect(url_for('index_upload'))
+#         else:
+#             flash('Failed!!! Check your file type', 'error')
+#             return redirect(url_for('index_upload'))
+#     return redirect(url_for('index_upload'))
 
 @app.route('/search', methods=['GET', 'POST'])
 def search_key():
