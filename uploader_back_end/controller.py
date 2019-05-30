@@ -25,29 +25,18 @@ def upload_file():
         else:
             return jsonify({"msg":"Upload Failed!!! check file type (only csv file types are supported)"}), 500
     return 
-# def upload_file():
-#     if request.method=='POST':
-#         file = request.files['file']
-#         if file and validate.check_file(file.filename):
-#             file_name = secure_filename(file.filename)
-#             path=os.path.join(app.config['UPLOAD_FOLDER'], file_name)
-#             file.save(path)
-#             flash(f'{file_name} has been uploaded!!!', 'success')
-#             return redirect(url_for('index_upload'))
-#         else:
-#             flash('Failed!!! Check your file type', 'error')
-#             return redirect(url_for('index_upload'))
-#     return redirect(url_for('index_upload'))
 
 @app.route('/search', methods=['GET', 'POST'])
 def search_key():
     if request.method == 'GET':
-       key=request.args.get('key_txt')
-       if key:
-          result=search(key)
-          if result:
-            return render_template('index.html', result= result)
-       return render_template('index.html')
+        key=request.args.get('key_txt')
+        if key:
+            result=search(key)
+            if result:
+                return jsonify({"result":result}), 200
+            else:
+                return
+    return
 
 
 if __name__ =='__main__':
