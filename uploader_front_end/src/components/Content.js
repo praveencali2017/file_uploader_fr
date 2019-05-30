@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {ToastsContainer, ToastsStore, ToastsContainerPosition} from 'react-toasts';
+import Result from './Result';
+
 export class Content extends Component {
+    constructor(props){
+        super(props);
+        this.resultElem=React.createRef();
+    }
+
     state={
         file_placeholder:""
     }
@@ -26,6 +33,13 @@ export class Content extends Component {
         });
     }
 
+    searchValue=(e)=>{
+        const key= document.getElementById("key_txt").value;
+        axios.get(`/search?key_txt=${key}`)
+        .then(res=>{
+            this.resultElem.current.onResultChange(res.data.result);
+        });
+    }
     render() {
         return (
             <div className="container">
@@ -43,11 +57,12 @@ export class Content extends Component {
                     </div>
                     <div className="row  mt-2 justify-content-center">  
                         <div className="col-4 text-center">
-                            <button className="btn-primary btn-lg" type="submit" id="search"> Search</button>
+                            <button className="btn-primary btn-lg" type="submit" id="search" onClick={this.searchValue}> Search</button>
                         </div>
                     </div>
                     <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_RIGHT}></ToastsContainer>
                 </div>
+                <Result ref={this.resultElem}/>
             </div>
         )
     }
