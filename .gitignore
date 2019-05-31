@@ -214,4 +214,8 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+#IDE configs
+.vscode/
+.idea/
+
 # End of https://www.gitignore.io/api/node,flask

@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, url_for, flash, redirect, jsonify
-from config.default import *
-from utils import validate
-from utils.search import search
+from flask import Flask, render_template, request, jsonify
+from uploader_back_end.config.default import SECRET_KEY, UPLOAD_DIR, HOST, PORT
+from uploader_back_end.utils import validate
 from werkzeug.utils import secure_filename
-from utils.data_constructor import build_data_to_insert
-import json
+from uploader_back_end.utils.data_constructor import build_data_to_insert
+from uploader_back_end.utils.db_helper import select_result
+
+import os
 app = Flask(__name__)
 app.secret_key =SECRET_KEY
 app.config['UPLOAD_FOLDER'] = UPLOAD_DIR
@@ -55,7 +56,7 @@ def search_key():
     if request.method == 'GET':
         key=request.args.get('key_txt')
         if key:
-            result=search(key)
+            result=select_result(key)
             return jsonify({"result":result}), 200
     return jsonify({"result":[]}), 200
 
