@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import {ToastsContainer, ToastsStore, ToastsContainerPosition} from 'react-toasts';
 import Result from './Result';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import getItems from '../actions/index'
 
 export class Content extends Component {
     constructor(props){
@@ -33,12 +36,13 @@ export class Content extends Component {
         });
     }
 
-    searchValue=(e)=>{
+    searchValue=async (e)=>{
         const key= document.getElementById("key_txt").value;
-        axios.get(`/search?key_txt=${key}`)
-        .then(res=>{
-            this.resultElem.current.onResultChange(res.data.result);
-        });
+        await this.props.getItems(key)
+        // axios.get(`/search?key_txt=${key}`)
+        // .then(res=>{
+            // this.resultElem.current.onResultChange(res.data.result);
+        // });
     }
     render() {
         return (
@@ -68,4 +72,25 @@ export class Content extends Component {
     }
 };
 
-export default Content;
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(
+      { getItems },
+      dispatch
+    );
+  }
+  
+  function mapStateToProps(state) {
+      console.log("State",state.items);
+    return {
+      items: state.items,
+    };
+  }
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Content);
+
+
+// export default Content;

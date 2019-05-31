@@ -1,6 +1,6 @@
-from .db_helper import insert_data
+from utils.db_helper import insert_update_data
 import pandas as pd
-from .custom_log import log_msg
+from utils.custom_log import log_msg
 
 """
 Builds the data
@@ -19,8 +19,8 @@ def build_data_to_insert(file_path):
             for row in data.iterrows():
                 key, value =row[1].values[0], row[1].values[1]
                 res[key]=value
-            insert_data(res)
-        return 1
+            result=insert_update_data(res)
+        return result
     except Exception as e:
         log_msg("Error---build_data_to_insert"+str(e))
         return 0
