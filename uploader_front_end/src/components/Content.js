@@ -32,7 +32,7 @@ export class Content extends Component {
             ToastsStore.success(res.data.msg);
         })
         .catch(err=>{
-            ToastsStore.success(err.response.data.msg);
+            ToastsStore.error(err.response.data.msg);
         });
     }
 
@@ -64,7 +64,7 @@ export class Content extends Component {
                             <button className="btn-primary btn-lg" type="submit" id="search" onClick={this.searchValue}> Search</button>
                         </div>
                     </div>
-                    <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_RIGHT}></ToastsContainer>
+                    <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_CENTER} lightBackground></ToastsContainer>
                 </div>
                 <Result ref={this.resultElem}/>
             </div>
