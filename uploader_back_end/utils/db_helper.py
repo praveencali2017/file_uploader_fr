@@ -3,7 +3,7 @@ from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from ..config.default import DB_HOST
-engine = create_engine(DB_HOST, echo = True)
+engine = create_engine(DB_HOST, echo = False)
 Base = declarative_base()
 Session= sessionmaker(bind=engine)
 
