@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, jsonify
-from uploader_back_end.config.default import SECRET_KEY, UPLOAD_DIR, HOST, PORT
-from uploader_back_end.utils import validate
+from config.default import SECRET_KEY, UPLOAD_DIR, HOST, PORT
+from utils import validate
+from utils.custom_log import log_msg
 from werkzeug.utils import secure_filename
-from uploader_back_end.utils.data_constructor import build_data_to_insert
-from uploader_back_end.utils.db_helper import select_result
+from utils.data_constructor import build_data_to_insert
+from utils.db_helper import select_result
 
 import os
 app = Flask(__name__)
@@ -57,6 +58,7 @@ def search_key():
         key=request.args.get('key_txt')
         if key:
             result=select_result(key)
+            log_msg(result)
             return jsonify({"result":result}), 200
     return jsonify({"result":[]}), 200
 

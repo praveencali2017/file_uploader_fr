@@ -2,8 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from ..config.default import DB_HOST
-engine = create_engine(DB_HOST, echo = False)
+from config.default import DB_HOST, DB_THREAD
+engine = create_engine(DB_HOST+DB_THREAD, echo = False)
 Base = declarative_base()
 Session= sessionmaker(bind=engine)
 
@@ -19,7 +19,7 @@ class TagInfo(Base):
 
 Base.metadata.create_all(engine)
 
-def insert_data(records):
+def insert_update_data(records):
     """
     Inserts all the field values as bulk insert
     :param records: {keys, values}
@@ -28,6 +28,11 @@ def insert_data(records):
     session = Session()
     try:
         result=[]
+        """
+        Pop the records if the value is already in datasource else add records to the db
+        """
+        for item in session.query(TagInfo).filter(TagInfo.key.in_(records.keys())).all():
+            records.pop(item.key)
         for key, value in records.items():
             info = TagInfo(key=key, value=value)
             result.append(info)

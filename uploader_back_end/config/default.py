@@ -15,6 +15,7 @@ Server and Database Configuration
 HOST='0.0.0.0'
 PORT=8000
 DEBUG=True
+DB_THREAD="?check_same_thread=False"
 DB_HOST = "sqlite:///words_bag.db"
 
 """
